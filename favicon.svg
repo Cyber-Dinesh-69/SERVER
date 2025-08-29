@@ -1,0 +1,17 @@
+<svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="100" height="100" rx="10" fill="#1A1A1A"/>
+
+  <!-- Autobot Logo Structure - Simplified for Favicon -->
+  <path 
+    d="M50 10 L85 30 V70 L50 90 L15 70 V30 L50 10 Z"
+    fill="#FFFFFF" 
+  />
+  
+  <!-- Inner details - Simplified -->
+  <path 
+    d="M50 25 L70 35 V60 L50 75 L30 60 V35 L50 25 Z M45 45 H55 V55 H45 V45 Z"
+    fill="#1A1A1A"
+  />
+
+</svg> 

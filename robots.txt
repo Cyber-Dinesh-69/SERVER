@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dinesh69069.github.io/PERSONAL-CYBER-PORTFOLIO/sitemap.xml
