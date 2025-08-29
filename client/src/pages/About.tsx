@@ -1,6 +1,5 @@
 import React from 'react';
 import SectionHeader from '../components/SectionHeader';
-import { gsap } from 'gsap';
 import { useEffect, useRef } from 'react';
 
 const About: React.FC = () => {
@@ -20,21 +19,23 @@ const About: React.FC = () => {
     if (skillsRef.current) {
       const progressBars = skillsRef.current.querySelectorAll('.progress-fill');
       
-      progressBars.forEach((bar, index) => {
-        gsap.fromTo(
-          bar,
-          { width: '0%' },
-          {
-            width: `${skills[index].percentage}%`,
-            duration: 1.5,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: bar,
-              start: "top 90%",
-              toggleActions: "play none none none"
+      import('gsap').then(({ gsap }) => {
+        progressBars.forEach((bar, index) => {
+          gsap.fromTo(
+            bar,
+            { width: '0%' },
+            {
+              width: `${skills[index].percentage}%`,
+              duration: 1.5,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: bar,
+                start: "top 90%",
+                toggleActions: "play none none none"
+              }
             }
-          }
-        );
+          );
+        });
       });
     }
   }, []);

@@ -101,17 +101,21 @@ const Contact: React.FC = () => {
               <div className="mt-12">
                 <h4 className="font-bold mb-4">Connect With Me</h4>
                 <div className="flex space-x-4">
-                  <a href="https://github.com/Dinesh69069" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-accent flex items-center justify-center text-accent hover:bg-accent hover:bg-opacity-10 transition-all duration-300">
-                    <GithubIcon className="w-5 h-5" />
+                  <a href="https://github.com/Dinesh69069" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-accent flex items-center justify-center text-accent hover:bg-accent hover:text-[#1A1A1A] transition-colors" aria-label="GitHub">
+                    <i className="fab fa-github"></i>
+                    <span className="sr-only">GitHub</span>
                   </a>
-                  <a href="https://www.linkedin.com/in/dinesh-kumar-sahoo-dinesh-kumar-sahoo-183533330/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-accent flex items-center justify-center text-accent hover:bg-accent hover:bg-opacity-10 transition-all duration-300">
-                    <LinkedInIcon className="w-5 h-5" />
+                  <a href="https://www.linkedin.com/in/dinesh-kumar-sahoo-183533330/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-accent flex items-center justify-center text-accent hover:bg-accent hover:text-[#1A1A1A] transition-colors" aria-label="LinkedIn">
+                    <i className="fab fa-linkedin"></i>
+                    <span className="sr-only">LinkedIn</span>
                   </a>
-                  <a href="https://www.hackerrank.com/profile/dineshkumarcs001" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-accent flex items-center justify-center text-accent hover:bg-accent hover:bg-opacity-10 transition-all duration-300">
-                    <HackerRankIcon className="w-5 h-5" />
+                  <a href="https://www.hackerrank.com/profile/dineshkumarcs001" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-accent flex items-center justify-center text-accent hover:bg-accent hover:text-[#1A1A1A] transition-colors" aria-label="HackerRank">
+                    <i className="fab fa-hackerrank"></i>
+                    <span className="sr-only">HackerRank</span>
                   </a>
-                  <a href="https://wa.me/918144252742" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-accent flex items-center justify-center text-accent hover:bg-accent hover:bg-opacity-10 transition-all duration-300">
-                    <WhatsappIcon className="w-5 h-5" />
+                  <a href="https://wa.me/918144252742" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-accent flex items-center justify-center text-accent hover:bg-accent hover:text-[#1A1A1A] transition-colors" aria-label="WhatsApp">
+                    <i className="fab fa-whatsapp"></i>
+                    <span className="sr-only">WhatsApp</span>
                   </a>
                 </div>
               </div>
@@ -131,7 +135,7 @@ const Contact: React.FC = () => {
                       type="text" 
                       id="name" 
                       className="w-full p-3 bg-[#2D2D2D] border border-gray-700 rounded-sm focus:border-accent focus:outline-none transition-colors" 
-                      placeholder="John Doe"
+                      placeholder="Your Name"
                       value={formData.name}
                       onChange={handleChange}
                       required
@@ -144,7 +148,7 @@ const Contact: React.FC = () => {
                       type="email" 
                       id="email" 
                       className="w-full p-3 bg-[#2D2D2D] border border-gray-700 rounded-sm focus:border-accent focus:outline-none transition-colors" 
-                      placeholder="john@example.com"
+                      placeholder="Enter Your Email"
                       value={formData.email}
                       onChange={handleChange}
                       required
@@ -158,7 +162,7 @@ const Contact: React.FC = () => {
                     type="text" 
                     id="subject" 
                     className="w-full p-3 bg-[#2D2D2D] border border-gray-700 rounded-sm focus:border-accent focus:outline-none transition-colors" 
-                    placeholder="Project Inquiry"
+                    placeholder="Enter Subject"
                     value={formData.subject}
                     onChange={handleChange}
                     required
@@ -171,7 +175,7 @@ const Contact: React.FC = () => {
                     id="message" 
                     rows={5} 
                     className="w-full p-3 bg-[#2D2D2D] border border-gray-700 rounded-sm focus:border-accent focus:outline-none transition-colors resize-none" 
-                    placeholder="Hello, I would like to discuss..."
+                    placeholder="Enter Your Message"
                     value={formData.message}
                     onChange={handleChange}
                     required

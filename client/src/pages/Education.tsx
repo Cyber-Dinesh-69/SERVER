@@ -1,6 +1,5 @@
 import React from 'react';
 import SectionHeader from '../components/SectionHeader';
-import { gsap } from 'gsap';
 import { useEffect, useRef } from 'react';
 
 const Education: React.FC = () => {
@@ -10,22 +9,24 @@ const Education: React.FC = () => {
     if (timelineRef.current) {
       const timelineItems = timelineRef.current.querySelectorAll('.glassmorphism');
       
-      gsap.fromTo(
-        timelineItems,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.2,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: timelineRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none"
+      import('gsap').then(({ gsap }) => {
+        gsap.fromTo(
+          timelineItems,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.2,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: timelineRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none"
+            }
           }
-        }
-      );
+        );
+      });
     }
   }, []);
 

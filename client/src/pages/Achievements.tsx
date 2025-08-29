@@ -1,6 +1,5 @@
 import React from 'react';
 import SectionHeader from '../components/SectionHeader';
-import { gsap } from 'gsap';
 import { useEffect, useRef, useState } from 'react';
 
 // Real certificates from the provided files
@@ -13,7 +12,7 @@ const certifications = [
     icon: "html5",
     description: "Certification in HTML fundamentals including semantic markup, forms, and accessibility. This certification validates my ability to create well-structured, accessible web pages using modern HTML5 standards.",
     skills: ["Semantic HTML", "Forms & Validation", "Accessibility", "Document Structure"],
-    image: "/PERSONAL-CYBER-PORTFOLIO/assets/images/certificates/HTML Certficate.pdf"
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/HTML - Lomus Learning.pdf"
   },
   {
     id: 2,
@@ -23,7 +22,7 @@ const certifications = [
     icon: "python",
     description: "Verified skills in Python programming fundamentals, including data structures and functions. This certification confirms my proficiency in writing efficient Python code and solving problems using Python's powerful libraries.",
     skills: ["Data Structures", "Functions", "Error Handling", "File I/O"],
-    image: "/PERSONAL-CYBER-PORTFOLIO/assets/images/certificates/Python Cerificate(Basic).pdf"
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/Python (Basic) - Hacker Rank.pdf"
   },
   {
     id: 3,
@@ -34,7 +33,7 @@ const certifications = [
     iconType: "solid",
     description: "Certification in SQL queries, data manipulation, and database management. This credential demonstrates my ability to design, query, and manage relational databases effectively.",
     skills: ["CRUD Operations", "Joins & Subqueries", "Indexing", "Database Design"],
-    image: "/PERSONAL-CYBER-PORTFOLIO/assets/images/certificates/SQL Certificate.pdf"
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/SQL - SimpliLearn.pdf"
   },
   {
     id: 4,
@@ -44,7 +43,7 @@ const certifications = [
     icon: "css3-alt",
     description: "Certified skills in CSS styling, selectors, and responsive design principles. This certification validates my ability to create visually appealing, responsive layouts using modern CSS techniques.",
     skills: ["Flexbox & Grid", "Media Queries", "Animations", "CSS Variables"],
-    image: "/PERSONAL-CYBER-PORTFOLIO/assets/images/certificates/CSS Certificate(Basic).pdf"
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/CSS (Basic) - Hacker Rank.pdf"
   },
   {
     id: 5,
@@ -55,7 +54,7 @@ const certifications = [
     iconType: "solid",
     description: "Verification of foundational C programming skills including memory management and structures. This certification confirms my understanding of low-level programming concepts and efficient memory usage.",
     skills: ["Memory Management", "Pointers", "Structures", "File Operations"],
-    image: "/PERSONAL-CYBER-PORTFOLIO/assets/images/certificates/C_Certificate(Basic).pdf"
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/C (Basic) - SimpliLearn.pdf"
   },
   {
     id: 6,
@@ -65,7 +64,82 @@ const certifications = [
     icon: "microsoft",
     description: "Certification in business intelligence concepts, data visualization, and analytics. This credential demonstrates my ability to transform raw data into actionable insights through effective visualization and analysis techniques.",
     skills: ["Data Visualization", "KPI Tracking", "Dashboard Design", "Data Modeling"],
-    image: "/PERSONAL-CYBER-PORTFOLIO/assets/images/certificates/BI Certificate.pdf"
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/BI Certificate - Microsoft.pdf"
+  },
+  {
+    id: 7,
+    title: "JavaScript (Basic)",
+    organization: "Sololearn",
+    year: "2024",
+    icon: "js",
+    description: "Certification in JavaScript fundamentals including variables, functions, and DOM manipulation. This certification validates my ability to create interactive web applications using modern JavaScript.",
+    skills: ["Variables & Data Types", "Functions", "DOM Manipulation", "Event Handling"],
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/JavaScript (Basic) - Sololearn.pdf"
+  },
+  {
+    id: 8,
+    title: "Introduction to Data Analytics",
+    organization: "LinkedIn Learning",
+    year: "2024",
+    icon: "chart-line",
+    iconType: "solid",
+    description: "Certification in data analytics fundamentals, including data visualization and statistical analysis. This credential demonstrates my ability to analyze and interpret data effectively.",
+    skills: ["Data Analysis", "Statistical Methods", "Data Visualization", "Business Intelligence"],
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/Introduction to Data Analytics (Linked-In Learning).pdf"
+  },
+  {
+    id: 9,
+    title: "C Intermediate",
+    organization: "Sololearn",
+    year: "2024",
+    icon: "code",
+    iconType: "solid",
+    description: "Advanced C programming certification covering intermediate concepts and advanced programming techniques. This certification demonstrates my proficiency in complex C programming concepts.",
+    skills: ["Advanced Pointers", "Memory Management", "Data Structures", "File I/O"],
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/C Intermediate - Sololearn.pdf"
+  },
+  {
+    id: 10,
+    title: "Technology Consulting",
+    organization: "Deloitte",
+    year: "2024",
+    icon: "building",
+    iconType: "solid",
+    description: "Certification in technology consulting principles and methodologies. This credential demonstrates my understanding of technology consulting practices and business technology solutions.",
+    skills: ["Technology Consulting", "Business Analysis", "Solution Design", "Client Management"],
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/Tecnology - Deloitte.pdf"
+  },
+  {
+    id: 11,
+    title: "Cybersecurity Fundamentals",
+    organization: "Deloitte",
+    year: "2024",
+    icon: "shield-alt",
+    iconType: "solid",
+    description: "Certification in cybersecurity fundamentals and best practices. This credential demonstrates my understanding of cybersecurity principles and security measures.",
+    skills: ["Cybersecurity", "Security Best Practices", "Risk Assessment", "Security Protocols"],
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/Cyber - Deloitte.pdf"
+  },
+  {
+    id: 12,
+    title: "SQL (Basic)",
+    organization: "HackerRank",
+    year: "2024",
+    icon: "database",
+    iconType: "solid",
+    description: "Basic SQL certification covering fundamental database querying and manipulation skills. This certification validates my ability to work with relational databases.",
+    skills: ["SQL Queries", "Data Retrieval", "Table Operations", "Basic Joins"],
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/SQL (Basic) - Hacker Rank.pdf"
+  },
+  {
+    id: 13,
+    title: "HTML Fundamentals",
+    organization: "Sololearn",
+    year: "2024",
+    icon: "html5",
+    description: "Comprehensive HTML certification covering modern web development standards. This certification validates my expertise in creating well-structured web content.",
+    skills: ["HTML5", "Semantic Markup", "Forms", "Web Standards"],
+    image: "/PERSONAL-CYBER-PORTFOLIO/CERTIFICATES/HTML - (SoloLearn).pdf"
   }
 ];
 
@@ -77,25 +151,30 @@ const Achievements: React.FC = () => {
   useEffect(() => {
     // Animate certificates
     if (certificatesRef.current) {
-      gsap.fromTo(
-        certificatesRef.current.querySelectorAll('.glassmorphism'),
-        { 
-          opacity: 0, 
-          scale: 0.9
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          stagger: 0.1,
-          duration: 0.6,
-          ease: "back.out(1.5)",
-          scrollTrigger: {
-            trigger: certificatesRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none"
-          }
+      import('gsap').then(({ gsap }) => {
+        const certificateElements = certificatesRef.current?.querySelectorAll('.glassmorphism');
+        if (certificateElements) {
+          gsap.fromTo(
+            certificateElements,
+            { 
+              opacity: 0, 
+              scale: 0.9
+            },
+            {
+              opacity: 1,
+              scale: 1,
+              stagger: 0.1,
+              duration: 0.6,
+              ease: "back.out(1.5)",
+              scrollTrigger: {
+                trigger: certificatesRef.current,
+                start: "top 80%",
+                toggleActions: "play none none none"
+              }
+            }
+          );
         }
-      );
+      });
     }
   }, []);
 
@@ -169,6 +248,7 @@ const Achievements: React.FC = () => {
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="neo-button text-accent text-sm px-4 py-2 border border-accent rounded-sm flex items-center hover:bg-accent hover:bg-opacity-10 transition-all"
+                        aria-label={cert.title}
                       >
                         <i className="fas fa-file-pdf mr-2"></i>
                         <span>View Certificate</span>
@@ -251,11 +331,12 @@ const Achievements: React.FC = () => {
                       
                       {/* View Options */}
                       <div className="flex flex-col gap-3 mt-6">
-                        <a 
-                          href={selectedCert.image}
-                          target="_blank"
-                          rel="noopener noreferrer"
+              <a 
+                href={selectedCert.image} 
+                target="_blank" 
+                rel="noopener noreferrer" 
                           className="neo-button bg-accent text-white px-6 py-3 rounded-sm flex items-center justify-center hover:bg-opacity-90 transition-all"
+                          aria-label={selectedCert.title}
                         >
                           <i className="fas fa-external-link-alt mr-2"></i>
                           <span>View Full Certificate</span>
@@ -265,10 +346,11 @@ const Achievements: React.FC = () => {
                           href={selectedCert.image}
                           download
                           className="neo-button border border-accent text-accent px-6 py-3 rounded-sm flex items-center justify-center hover:bg-accent hover:bg-opacity-10 transition-all"
-                        >
-                          <i className="fas fa-download mr-2"></i>
-                          <span>Download Certificate</span>
-                        </a>
+                          aria-label={selectedCert.title}
+              >
+                <i className="fas fa-download mr-2"></i>
+                <span>Download Certificate</span>
+              </a>
                       </div>
                     </div>
                   </div>

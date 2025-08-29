@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { gsap } from 'gsap';
 
 const LoadingScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -41,99 +40,102 @@ const LoadingScreen: React.FC = () => {
     ];
     
     // Create cyberpunk-style loading sequence with GSAP
-    const mainTl = gsap.timeline();
+    let mainTl: any;
     
     // Initial glitch/boot effect
-    mainTl.to('.loading-screen', {
-      opacity: 0.5,
-      duration: 0.05,
-      repeat: 8,
-      yoyo: true
-    });
-    
-    // Add boot log lines
-    const addBootLine = (index: number) => {
-      if (index < bootLogSequence.length) {
-        setBootLines(prev => [...prev, bootLogSequence[index]]);
-        // Auto-scroll terminal
-        if (terminalRef.current) {
-          terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-        }
-      }
-    };
-    
-    // Add initial boot lines faster
-    for (let i = 0; i < 3; i++) {
-      mainTl.call(() => addBootLine(i), [], i * 0.2);
-    }
-    
-    // Animate the robotic parts with cooler entrances
-    mainTl.fromTo('.robot-head', 
-      { scale: 0.8, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.8, ease: "elastic.out(1.2, 0.5)" }
-    );
-    
-    mainTl.fromTo('.robot-part', 
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.08, duration: 0.6, ease: "power2.out" },
-      "-=0.5"
-    );
-    
-    // Continue adding boot lines
-    for (let i = 3; i < bootLogSequence.length; i++) {
-      mainTl.call(() => addBootLine(i), [], 1.5 + (i - 3) * 0.15);
-    }
-    
-    // Animate the progress bar and text changes
-    textSequence.forEach((text, index) => {
-      // Update text and progress in sequence
-      mainTl.call(() => {
-        setLoadingText(text);
-        setProgress(Math.floor((index + 1) / textSequence.length * 100));
-      }, [], 1 + index * 0.9);
+    import('gsap').then(({ gsap }) => {
+      mainTl = gsap.timeline();
+      mainTl.to('.loading-screen', {
+        opacity: 0.5,
+        duration: 0.05,
+        repeat: 8,
+        yoyo: true
+      });
       
-      // Add scanning line effect
-      if (index < textSequence.length - 1) {
-        mainTl.fromTo('.scan-line',
-          { top: '0%', opacity: 0.7 },
-          { top: '100%', opacity: 0, duration: 0.8, ease: "power1.inOut" },
-          1 + index * 0.9 + 0.1
-        );
+      // Add boot log lines
+      const addBootLine = (index: number) => {
+        if (index < bootLogSequence.length) {
+          setBootLines(prev => [...prev, bootLogSequence[index]]);
+          // Auto-scroll terminal
+          if (terminalRef.current) {
+            terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+          }
+        }
+      };
+      
+      // Add initial boot lines faster
+      for (let i = 0; i < 3; i++) {
+        mainTl.call(() => addBootLine(i), [], i * 0.2);
       }
+      
+      // Animate the robotic parts with cooler entrances
+      mainTl.fromTo('.robot-head', 
+        { scale: 0.8, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.8, ease: "elastic.out(1.2, 0.5)" }
+      );
+      
+      mainTl.fromTo('.robot-part', 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.08, duration: 0.6, ease: "power2.out" },
+        "-=0.5"
+      );
+      
+      // Continue adding boot lines
+      for (let i = 3; i < bootLogSequence.length; i++) {
+        mainTl.call(() => addBootLine(i), [], 1.5 + (i - 3) * 0.15);
+      }
+      
+      // Animate the progress bar and text changes
+      textSequence.forEach((text, index) => {
+        // Update text and progress in sequence
+        mainTl.call(() => {
+          setLoadingText(text);
+          setProgress(Math.floor((index + 1) / textSequence.length * 100));
+        }, [], 1 + index * 0.9);
+        
+        // Add scanning line effect
+        if (index < textSequence.length - 1) {
+          mainTl.fromTo('.scan-line',
+            { top: '0%', opacity: 0.7 },
+            { top: '100%', opacity: 0, duration: 0.8, ease: "power1.inOut" },
+            1 + index * 0.9 + 0.1
+          );
+        }
+      });
+      
+      // Eye scanning effects
+      mainTl.to('.robot-eye-inner', {
+        boxShadow: '0 0 25px 8px #00FFB2',
+        background: 'rgba(0, 255, 178, 0.9)',
+        repeat: 3,
+        yoyo: true,
+        duration: 0.3
+      }, 3);
+      
+      // Mouth analyzer animation
+      mainTl.to('.mouth-bar', {
+        height: (i) => (Math.random() * 12) + 2 + 'px',
+        stagger: { each: 0.05, repeat: 8, yoyo: true },
+        duration: 0.2,
+      }, 3);
+      
+      // Final HUD elements
+      mainTl.fromTo('.hud-element',
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, stagger: 0.1, duration: 0.4 },
+        4
+      );
+      
+      // Final reveal animation
+      mainTl.to('.loading-screen', {
+        opacity: 0,
+        duration: 0.8,
+        delay: 1.2,
+        onComplete: () => {
+          setLoading(false);
+        }
+      }, "+=1.5");
     });
-    
-    // Eye scanning effects
-    mainTl.to('.robot-eye-inner', {
-      boxShadow: '0 0 25px 8px #00FFB2',
-      background: 'rgba(0, 255, 178, 0.9)',
-      repeat: 3,
-      yoyo: true,
-      duration: 0.3
-    }, 3);
-    
-    // Mouth analyzer animation
-    mainTl.to('.mouth-bar', {
-      height: (i) => (Math.random() * 12) + 2 + 'px',
-      stagger: { each: 0.05, repeat: 8, yoyo: true },
-      duration: 0.2,
-    }, 3);
-    
-    // Final HUD elements
-    mainTl.fromTo('.hud-element',
-      { opacity: 0, scale: 0.8 },
-      { opacity: 1, scale: 1, stagger: 0.1, duration: 0.4 },
-      4
-    );
-    
-    // Final reveal animation
-    mainTl.to('.loading-screen', {
-      opacity: 0,
-      duration: 0.8,
-      delay: 1.2,
-      onComplete: () => {
-        setLoading(false);
-      }
-    }, "+=1.5");
     
     return () => {
       mainTl.kill();

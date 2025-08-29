@@ -1,5 +1,4 @@
 import React from 'react';
-import { gsap } from 'gsap';
 import { useEffect, useRef } from 'react';
 import { HackerRankIcon, WhatsappIcon, GithubIcon, LinkedInIcon } from '../components/SocialIcons';
 
@@ -9,37 +8,54 @@ const Home: React.FC = () => {
   const socialRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    // Animate title text
-    if (titleRef.current) {
-      const tl = gsap.timeline();
-      tl.from(titleRef.current.children, {
-        opacity: 0,
-        y: 30,
-        stagger: 0.2,
-        duration: 0.8,
-        ease: "power3.out"
+    let hasAnimated = false;
+    
+    // Animate title text only when it becomes visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !hasAnimated && titleRef.current) {
+          hasAnimated = true;
+          import('gsap').then(({ gsap }) => {
+            const tl = gsap.timeline();
+            tl.from(titleRef.current!.children, {
+              opacity: 0,
+              y: 30,
+              stagger: 0.2,
+              duration: 0.8,
+              ease: "power3.out"
+            });
+          });
+        }
       });
+    }, { threshold: 0.1 });
+
+    if (titleRef.current) {
+      observer.observe(titleRef.current);
     }
     
     // Animate photo container
     if (containerRef.current) {
+      import('gsap').then(({ gsap }) => {
       gsap.from(containerRef.current, {
         opacity: 0,
         scale: 0.8,
         duration: 1,
         delay: 0.5,
         ease: "back.out(1.7)"
+        });
       });
     }
 
     // Animate social icons
     if (socialRef.current) {
+      import('gsap').then(({ gsap }) => {
       gsap.from(socialRef.current, {
         opacity: 0,
         y: 30,
         duration: 0.8,
         delay: 1.2,
         ease: "power3.out"
+        });
       });
     }
   }, []);
@@ -77,18 +93,22 @@ const Home: React.FC = () => {
               rel="noopener noreferrer" 
               className="flex items-center justify-center text-gray-300 hover:text-accent transition-colors"
               title="GitHub"
+              aria-label="GitHub"
             >
               <GithubIcon className="w-6 h-6" />
+              <span className="sr-only">GitHub</span>
             </a>
             
             <a 
-              href="https://www.linkedin.com/in/dinesh-kumar-sahoo-dinesh-kumar-sahoo-183533330/" 
+              href="https://www.linkedin.com/in/dinesh-kumar-sahoo-183533330/" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="flex items-center justify-center text-gray-300 hover:text-accent transition-colors"
               title="LinkedIn"
+              aria-label="LinkedIn"
             >
               <LinkedInIcon className="w-6 h-6" />
+              <span className="sr-only">LinkedIn</span>
             </a>
             
             <a 
@@ -97,8 +117,10 @@ const Home: React.FC = () => {
               rel="noopener noreferrer" 
               className="flex items-center justify-center text-gray-300 hover:text-accent transition-colors"
               title="HackerRank"
+              aria-label="HackerRank"
             >
               <HackerRankIcon className="w-6 h-6" />
+              <span className="sr-only">HackerRank</span>
             </a>
             
             <a 
@@ -107,8 +129,10 @@ const Home: React.FC = () => {
               rel="noopener noreferrer" 
               className="flex items-center justify-center text-gray-300 hover:text-accent transition-colors"
               title="WhatsApp"
+              aria-label="WhatsApp"
             >
               <WhatsappIcon className="w-6 h-6" />
+              <span className="sr-only">WhatsApp</span>
             </a>
           </div>
         </div>
@@ -121,13 +145,15 @@ const Home: React.FC = () => {
             <div className="rounded-full overflow-hidden border-2 border-accent p-1 shadow-neon">
               {/* Profile photo with fallback paths */}
               <img 
-                src="./assets/images/profile/profile.jpg" 
+                src={import.meta.env.BASE_URL + "profile.jpg"}
                 alt="Dinesh Kumar Sahoo"
                 className="rounded-full w-48 h-48 md:w-64 md:h-64 object-cover"
+                width={256}
+                height={256}
+                loading="lazy"
                 onError={(e) => {
-                  // Try alternative paths if the primary one fails
                   (e.target as HTMLImageElement).onerror = null;
-                  (e.target as HTMLImageElement).src = "/Profile_photo.jpg";
+                  (e.target as HTMLImageElement).src = import.meta.env.BASE_URL + "Profile_photo.jpg";
                 }}
               />
             </div>
@@ -136,8 +162,9 @@ const Home: React.FC = () => {
       </div>
       
       <div className="absolute bottom-10 left-0 right-0 flex justify-center">
-        <a href="#about" className="animate-bounce text-accent">
+        <a href="#about" className="animate-bounce text-accent" aria-label="Scroll to About section">
           <i className="fa-solid fa-chevron-down text-2xl"></i>
+          <span className="sr-only">Scroll to About section</span>
         </a>
       </div>
     </section>
