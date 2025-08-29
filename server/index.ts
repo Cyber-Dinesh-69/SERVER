@@ -65,8 +65,10 @@ app.use((req, res, next) => {
 
   // PORT (environment variable ya default 5000)
   const PORT = parseInt(process.env.PORT || '5000', 10);
-  server.listen(PORT, "localhost", () => {
-    console.log(`✅ Server running at http://localhost:${PORT}`);
-    console.log(`🚀 Open in your browser: http://localhost:${PORT}`);
+  const HOST = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+  
+  server.listen(PORT, HOST, () => {
+    console.log(`✅ Server running at http://${HOST}:${PORT}`);
+    console.log(`🚀 Open in your browser: http://${HOST}:${PORT}`);
   });
 })();
