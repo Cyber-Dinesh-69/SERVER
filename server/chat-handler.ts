@@ -6,12 +6,14 @@ import path from "path";
 // Load environment variables from root .env
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
-// Providers: OpenAI (Responses API) and Hugging Face fallback
+// Providers: OpenAI, Groq (faster alternative), and Hugging Face fallback
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const HF_API_KEY = process.env.HF_API_KEY;
 
+const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const HUGGINGFACE_API_URL =
-  "https://api-inference.huggingface.co/models/google/flan-t5-small";
+  "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct";
 
 type ChatAction = { action: "navigate"; target: string } | { action?: undefined };
 
@@ -43,6 +45,37 @@ function detectIntent(userMessage: string): { reply: string } & ChatAction {
     };
   }
 
+  // Portfolio-specific responses
+  if (/(who|about).*(dinesh|you)/.test(text)) {
+    return {
+      reply: "I'm Dinesh's AI portfolio assistant! Dinesh is a cybersecurity enthusiast and developer with expertise in web technologies, data analytics, and security frameworks. You can explore his projects, education, and achievements using this portfolio.",
+    };
+  }
+
+  if (/(skill|technology|tech|programming)/.test(text)) {
+    return {
+      reply: "Dinesh has skills in cybersecurity, web development (React, TypeScript, Node.js), data analytics, SQL, Python, and various security frameworks. Check out the 'About' section for detailed skills and the 'Projects' section for practical implementations!",
+    };
+  }
+
+  if (/(project|work|portfolio)/.test(text)) {
+    return {
+      reply: "Dinesh has created various projects including web applications, security tools, and data analytics solutions. Navigate to the 'Projects' section to see detailed case studies with technologies used and live demos!",
+    };
+  }
+
+  if (/(certificate|education|qualification)/.test(text)) {
+    return {
+      reply: "Dinesh holds multiple certifications in cybersecurity (Deloitte), data analytics (Microsoft BI, LinkedIn Learning), and programming languages (Python, JavaScript, SQL, CSS, HTML). Check the 'Education' section for all certificates!",
+    };
+  }
+
+  if (/(contact|hire|reach|email)/.test(text)) {
+    return {
+      reply: "You can contact Dinesh through the contact form in the 'Contact' section, or connect via LinkedIn and other social links. He's open to cybersecurity roles, development projects, and consulting opportunities!",
+    };
+  }
+
   // No intent detected
   return { reply: "" };
 }
@@ -50,7 +83,7 @@ function detectIntent(userMessage: string): { reply: string } & ChatAction {
 async function callOpenAI(userMessage: string): Promise<string | null> {
   if (!OPENAI_API_KEY) return null;
   try {
-    const response = await fetch("https://api.openai.com/v1/responses", {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${OPENAI_API_KEY}`,
@@ -58,19 +91,50 @@ async function callOpenAI(userMessage: string): Promise<string | null> {
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
-        input: [
+        messages: [
           {
             role: "system",
-            content: "You are a helpful portfolio assistant. Keep answers concise.",
+            content: "You are a helpful portfolio assistant for Dinesh, a cybersecurity enthusiast and developer. Keep answers concise and professional.",
           },
           { role: "user", content: userMessage },
         ],
+        max_tokens: 150,
       }),
     });
     if (!response.ok) throw new Error(await response.text());
     const data = (await response.json()) as any;
-    const text =
-      data?.output_text || data?.choices?.[0]?.message?.content || null;
+    const text = data?.choices?.[0]?.message?.content || null;
+    return typeof text === "string" ? text : null;
+  } catch {
+    return null;
+  }
+}
+
+async function callGroq(userMessage: string): Promise<string | null> {
+  if (!GROQ_API_KEY) return null;
+  try {
+    const response = await fetch(GROQ_API_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${GROQ_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "mixtral-8x7b-32768",
+        messages: [
+          {
+            role: "system",
+            content: "You are a helpful portfolio assistant for Dinesh, a cybersecurity enthusiast and developer. Keep answers concise and professional.",
+          },
+          { role: "user", content: userMessage },
+        ],
+        max_tokens: 150,
+        temperature: 0.7,
+      }),
+    });
+    if (!response.ok) throw new Error(await response.text());
+    const data = (await response.json()) as any;
+    const text = data?.choices?.[0]?.message?.content || null;
     return typeof text === "string" ? text : null;
   } catch {
     return null;
@@ -103,13 +167,17 @@ export async function handleChatMessage(req: Request, res: Response) {
       return res.status(400).json({ reply: "Please provide a message." });
     }
 
-    // Lightweight local intent detection
+    // Enhanced intent detection - try this first for better user experience
     const intent = detectIntent(message);
-    if (intent.reply && intent.action === "navigate" && intent.target) {
+    if (intent.reply) {
       return res.status(200).json(intent);
     }
 
-    // Try OpenAI first
+    // Try Groq first (fast and reliable)
+    const groqResponse = await callGroq(message);
+    if (groqResponse) return res.status(200).json({ reply: groqResponse });
+
+    // Try OpenAI as backup
     const openAi = await callOpenAI(message);
     if (openAi) return res.status(200).json({ reply: openAi });
 
@@ -117,9 +185,9 @@ export async function handleChatMessage(req: Request, res: Response) {
     const hf = await callHuggingFace(message);
     if (hf) return res.status(200).json({ reply: hf });
 
-    // Final fallback
+    // Final fallback for unmatched queries
     return res.status(200).json({
-      reply: "AI is not configured. Set OPENAI_API_KEY or HF_API_KEY in .env.",
+      reply: "I'm Dinesh's portfolio assistant! You can ask about his skills, projects, education, or say things like 'go to projects' or 'open contact' to navigate.",
     });
   } catch (error) {
     console.error("Error processing chat message:", error);
