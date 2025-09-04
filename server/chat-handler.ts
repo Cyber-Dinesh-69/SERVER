@@ -25,36 +25,50 @@ function detectIntent(userMessage: string): { reply: string } & ChatAction {
     target: `#${id}`,
   });
 
-  if (/(go|take|navigate|open).*(home|start)/.test(text))
+  // Navigation with typo tolerance
+  if (/(go|take|navigate|open|naviaget|naviagte|opne).*(home|hom|start)/.test(text))
     return navigateTo("home", "Home");
-  if (/(go|take|navigate|open).*(about)/.test(text))
+  if (/(go|take|navigate|open|naviaget|naviagte|opne).*(about|abut|abot)/.test(text))
     return navigateTo("about", "About");
-  if (/(go|take|navigate|open).*(education)/.test(text))
+  if (/(go|take|navigate|open|naviaget|naviagte|opne).*(education|educaton|educaion|study|studies)/.test(text))
     return navigateTo("education", "Education");
-  if (/(go|take|navigate|open).*(project|work)/.test(text))
+  if (/(go|take|navigate|open|naviaget|naviagte|opne).*(project|projects|work|works|projct|projet)/.test(text))
     return navigateTo("projects", "Projects");
-  if (/(go|take|navigate|open).*(achievement|award)/.test(text))
+  if (/(go|take|navigate|open|naviaget|naviagte|opne).*(achievement|achievements|award|awards|achivment)/.test(text))
     return navigateTo("achievements", "Achievements");
-  if (/(go|take|navigate|open).*(contact|reach|message)/.test(text))
+  if (/(go|take|navigate|open|naviaget|naviagte|opne).*(contact|reach|message|contct|mesage)/.test(text))
     return navigateTo("contact", "Contact");
 
-  if (/what.*(can you|do you)|help|commands/.test(text)) {
+  if (/what.*(can you|do you)|help|commands|hlep|comands/.test(text)) {
     return {
       reply:
-        "You can ask about projects, skills, or say things like: 'go to projects', 'open contact', 'navigate to education'.",
+        "🤖 I can help you with:\n• Ask about Dinesh's skills, projects, or background\n• Navigate: 'go to projects', 'open contact', 'navigate to education'\n• Ask about specific people or topics\n• General portfolio questions\n\nTry asking 'Who is Dinesh?' or 'What skills does he have?'",
     };
   }
 
-  // Portfolio-specific responses
-  if (/(who|about).*(dinesh|you)/.test(text)) {
+  // Portfolio-specific responses with typo tolerance
+  if (/(who|about).*(dinesh|dines|dinsh|dines|you)/.test(text)) {
     return {
-      reply: "I'm Dinesh's AI portfolio assistant! Dinesh is a cybersecurity enthusiast and developer with expertise in web technologies, data analytics, and security frameworks. You can explore his projects, education, and achievements using this portfolio.",
+      reply: "Creator of this site, A web Developer | Cloud & DevOps Enthusiast",
     };
   }
 
-  if (/(skill|technology|tech|programming)/.test(text)) {
+  // Special response for Simran with random versions
+  if (/(who|about).*(simran|simarn|simrn|shimran)/.test(text)) {
+    const simranResponses = [
+      "She is the source of motivation and confidence for my creator 💪\nAnd the only one who truly cares about him 🙂",
+      "She is the biggest inspiration behind my creator's journey 💫\nThe one who always stands by him and truly cares 🙂",
+      "She is the reason my master never gives up 💪\nHis strongest supporter and the one who truly cares ❤️"
+    ];
+    const randomResponse = simranResponses[Math.floor(Math.random() * simranResponses.length)];
     return {
-      reply: "Dinesh has skills in cybersecurity, web development (React, TypeScript, Node.js), data analytics, SQL, Python, and various security frameworks. Check out the 'About' section for detailed skills and the 'Projects' section for practical implementations!",
+      reply: randomResponse,
+    };
+  }
+
+  if (/(skill|technology|tech|programming|skil|skils|technlogy|programing)/.test(text)) {
+    return {
+      reply: "💻 Technical Skills:\n• Programming: JavaScript, TypeScript, Python, SQL, HTML, CSS\n• Frameworks: React, Node.js, Express\n• Cloud & DevOps: AWS, Docker, CI/CD\n• Databases: MySQL, MongoDB\n• Tools: Git, VS Code, Postman\n• Security: Cybersecurity frameworks, Ethical Hacking\n\nCheck out the 'About' section for detailed skills and the 'Projects' section for practical implementations!",
     };
   }
 
@@ -94,7 +108,7 @@ async function callOpenAI(userMessage: string): Promise<string | null> {
         messages: [
           {
             role: "system",
-            content: "You are a helpful portfolio assistant for Dinesh, a cybersecurity enthusiast and developer. Keep answers concise and professional.",
+            content: "You are Dinesh's intelligent portfolio assistant. Dinesh is a web developer and Cloud & DevOps enthusiast. You should be helpful, professional, and knowledgeable about his work. Handle typos and variations in questions gracefully. Keep responses concise but informative. If asked about skills, focus on web development, cloud technologies, and DevOps tools.",
           },
           { role: "user", content: userMessage },
         ],
@@ -124,7 +138,7 @@ async function callGroq(userMessage: string): Promise<string | null> {
         messages: [
           {
             role: "system",
-            content: "You are a helpful portfolio assistant for Dinesh, a cybersecurity enthusiast and developer. Keep answers concise and professional.",
+            content: "You are Dinesh's intelligent portfolio assistant. Dinesh is a web developer and Cloud & DevOps enthusiast. You should be helpful, professional, and knowledgeable about his work. Handle typos and variations in questions gracefully. Keep responses concise but informative. If asked about skills, focus on web development, cloud technologies, and DevOps tools.",
           },
           { role: "user", content: userMessage },
         ],
@@ -187,7 +201,7 @@ export async function handleChatMessage(req: Request, res: Response) {
 
     // Final fallback for unmatched queries
     return res.status(200).json({
-      reply: "I'm Dinesh's portfolio assistant! You can ask about his skills, projects, education, or say things like 'go to projects' or 'open contact' to navigate.",
+      reply: "Welcome! 🤝 I’m your AI guide. Explore Dinesh’s journey through his projects, skills, and technologies.",
     });
   } catch (error) {
     console.error("Error processing chat message:", error);
