@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 import path from "path";
 
 // Load environment variables from root .env
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
+dotenv.config({ path: path.resolve(process.cwd(), ".env") });
+dotenv.config(); // Also try default loading
 
 // Providers: OpenAI, Groq (faster alternative), and Hugging Face fallback
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -72,21 +73,35 @@ function detectIntent(userMessage: string): { reply: string } & ChatAction {
     };
   }
 
-  if (/(project|work|portfolio)/.test(text)) {
+  if (/(project|work|portfolio|built|created|made|develop)/.test(text)) {
     return {
       reply: "Dinesh has created various projects including web applications, security tools, and data analytics solutions. Navigate to the 'Projects' section to see detailed case studies with technologies used and live demos!",
     };
   }
 
-  if (/(certificate|education|qualification)/.test(text)) {
+  if (/(certificate|education|qualification|study|studies|learn|college|university|school)/.test(text)) {
     return {
       reply: "Dinesh holds multiple certifications in cybersecurity (Deloitte), data analytics (Microsoft BI, LinkedIn Learning), and programming languages (Python, JavaScript, SQL, CSS, HTML). Check the 'Education' section for all certificates!",
     };
   }
 
-  if (/(contact|hire|reach|email)/.test(text)) {
+  if (/(contact|hire|reach|email|available|work|job|opportunity|employ)/.test(text)) {
     return {
       reply: "You can contact Dinesh through the contact form in the 'Contact' section, or connect via LinkedIn and other social links. He's open to cybersecurity roles, development projects, and consulting opportunities!",
+    };
+  }
+
+  // Programming language specific questions
+  if (/(python|react|javascript|html|css|programming|code|coding)/.test(text)) {
+    return {
+      reply: "💻 Yes! Dinesh works with:\n• Programming: JavaScript, Python, HTML, CSS, C\n• Frameworks: React, Node.js\n• Databases: MySQL\n• Tools: Git, VS Code, DevTools\n\nCheck the 'Projects' section to see these skills in action!",
+    };
+  }
+
+  // Experience and background questions  
+  if (/(experience|years|how long|background|expert)/.test(text)) {
+    return {
+      reply: "Dinesh is a passionate web developer and Cloud & DevOps enthusiast with hands-on experience in multiple technologies. Check out his 'Projects' section to see his practical work and 'Education' section for his certifications and learning journey!",
     };
   }
 
@@ -134,7 +149,7 @@ async function callGroq(userMessage: string): Promise<string | null> {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "mixtral-8x7b-32768",
+        model: "llama-3.1-8b-instant", // Latest supported model
         messages: [
           {
             role: "system",
@@ -146,7 +161,9 @@ async function callGroq(userMessage: string): Promise<string | null> {
         temperature: 0.7,
       }),
     });
+    
     if (!response.ok) throw new Error(await response.text());
+    
     const data = (await response.json()) as any;
     const text = data?.choices?.[0]?.message?.content || null;
     return typeof text === "string" ? text : null;
