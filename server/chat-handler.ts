@@ -68,7 +68,7 @@ function detectIntent(userMessage: string): { reply: string } & ChatAction {
 
   if (/(skill|technology|tech|programming|skil|skils|technlogy|programing)/.test(text)) {
     return {
-      reply: "💻 Technical Skills:\n• Programming: JavaScript, TypeScript, Python, SQL, HTML, CSS\n• Frameworks: React, Node.js, Express\n• Cloud & DevOps: AWS, Docker, CI/CD\n• Databases: MySQL, MongoDB\n• Tools: Git, VS Code, Postman\n• Security: Cybersecurity frameworks, Ethical Hacking\n\nCheck out the 'About' section for detailed skills and the 'Projects' section for practical implementations!",
+      reply: "💻 Technical Skills:\n• Programming: JavaScript, Python, HTML, CSS, C\n• Frameworks: React, Node.js\n• Databases: MySQL\n• Tools: Git, VS Code, DevTools\n\nCheck out the 'About' section for detailed skills and the 'Projects' section for practical implementations!",
     };
   }
 
